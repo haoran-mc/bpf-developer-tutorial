@@ -5,7 +5,7 @@
 
 ## 背景
 
-截至目前（2023-04），Android 还未对 eBPF 程序的动态加载做出较好的支持，无论是以 bcc 为代表的带编译器分发方案，还是基于 btf 和 libbpf 的 CO-RE 方案，都在较大程度上离不开 Linux 环境的支持，无法在 Android 系统上很好地运行[^WeiShu]。
+<ins>截至目前（2023-04），Android 还未对 eBPF 程序的动态加载做出较好的支持，无论是以 bcc 为代表的带编译器分发方案，还是基于 btf 和 libbpf 的 CO-RE 方案，都在较大程度上离不开 Linux 环境的支持，无法在 Android 系统上很好地运行[^WeiShu]。</ins>
 
 虽然如此，在 Android 平台上尝试 eBPF 也已经有了一些成功案例，除谷歌官方提供的修改 `Android.bp` 以将 eBPF 程序随整个系统一同构建并挂载的方案[^Google]，也有人提出基于 Android 内核构建 Linux 环境进而运行 eBPF 工具链的思路，并开发了相关工具。
 

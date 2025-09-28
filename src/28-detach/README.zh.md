@@ -16,7 +16,7 @@ BPF程序使用 maps 有两个阶段。首先，创建 maps 并将其文件描�
 
 然而，不同的附加点的行为不同。一些附加点（如XDP、tc的clsact和基于cgroup的hooks）是全局的，即使没有进程使用它们，程序也会继续处理数据包。另一些附加点（如kprobe、uprobe、tracepoint、perf_event、raw_tracepoint、socket过滤器和so_reuseport挂钩）只在持有事件的进程的生命周期内生效。当这些进程崩溃时，内核将分离BPF程序并减少其引用计数。
 
-总结：XDP、tc、lwt和cgroup挂钩是全局的，而kprobe、uprobe、tracepoint、perf_event、raw_tracepoint、socket过滤器和so_reuseport挂钩是本地于进程的。基于文件描述符的API具有自动清理的优点，因此如果用户空间进程出现问题，内核将自动清理所有对象。在网络方面，基于文件描述符的API可以防止程序无限制地运行。
+总结：<ins>XDP、tc、lwt和cgroup挂钩是全局的，而kprobe、uprobe、tracepoint、perf_event、raw_tracepoint、socket过滤器和so_reuseport挂钩是本地于进程的。基于文件描述符的API具有自动清理的优点，因此如果用户空间进程出现问题，内核将自动清理所有对象。在网络方面，基于文件描述符的API可以防止程序无限制地运行。</ins>
 
 另一种保持 BPF 程序和映射活动的方法是 BPFFS，即BPF文件系统。通过将程序或 maps 固定(pin)到BPFFS中的某个位置，可以增加其引用计数，并使其保持活动状态，即使没有附加到任何位置或任何程序使用固定的BPF程序和 maps 。
 

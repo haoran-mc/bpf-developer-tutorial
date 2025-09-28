@@ -4,7 +4,7 @@
 
 ## 为什么选择XDP？
 
-`XDP`（eXpress Data Path）是Linux中的一个高速、内核级网络框架，它允许在网络堆栈的最早阶段，即在网络接口卡（NIC）上处理数据包。这使得XDP可以进行超低延迟和高吞吐量的数据包处理，非常适合用于负载均衡、DDoS保护和流量过滤等任务。
+<ins>`XDP`（eXpress Data Path）是Linux中的一个高速、内核级网络框架，它允许在网络堆栈的最早阶段，即在网络接口卡（NIC）上处理数据包。这使得XDP可以进行超低延迟和高吞吐量的数据包处理，非常适合用于负载均衡、DDoS保护和流量过滤等任务。</ins>
 
 XDP的关键特性:
 
@@ -66,7 +66,7 @@ struct {
     __type(value, struct backend_config);
 } backends SEC(".maps");
 
-int client_ip = bpf_htonl(0xa000001);  
+int client_ip = bpf_htonl(0xa000001);
 unsigned char client_mac[ETH_ALEN] = {0xDE, 0xAD, 0xBE, 0xEF, 0x0, 0x1};
 int load_balancer_ip = bpf_htonl(0xa00000a);
 unsigned char load_balancer_mac[ETH_ALEN] = {0xDE, 0xAD, 0xBE, 0xEF, 0x0, 0x10};
@@ -115,7 +115,7 @@ int xdp_load_balancer(struct xdp_md *ctx) {
     // Check if the protocol is TCP or UDP
     if (iph->protocol != IPPROTO_TCP)
         return XDP_PASS;
-    
+
     bpf_printk("Received Source IP: 0x%x", bpf_ntohl(iph->saddr));
     bpf_printk("Received Destination IP: 0x%x", bpf_ntohl(iph->daddr));
     bpf_printk("Received Source MAC: %x:%x:%x:%x:%x:%x", eth->h_source[0], eth->h_source[1], eth->h_source[2], eth->h_source[3], eth->h_source[4], eth->h_source[5]);
@@ -130,7 +130,7 @@ int xdp_load_balancer(struct xdp_md *ctx) {
         struct backend_config *backend = bpf_map_lookup_elem(&backends, &key);
         if (!backend)
             return XDP_PASS;
-        
+
         iph->daddr = backend->ip;
         __builtin_memcpy(eth->h_dest, backend->mac, ETH_ALEN);
     }
@@ -149,8 +149,8 @@ int xdp_load_balancer(struct xdp_md *ctx) {
     // Recalculate IP checksum
     iph->check = iph_csum(iph);
 
-    bpf_printk("Redirecting packet to new IP 0x%x from IP 0x%x", 
-                bpf_ntohl(iph->daddr), 
+    bpf_printk("Redirecting packet to new IP 0x%x from IP 0x%x",
+                bpf_ntohl(iph->daddr),
                 bpf_ntohl(iph->saddr)
             );
     bpf_printk("New Dest MAC: %x:%x:%x:%x:%x:%x", eth->h_dest[0], eth->h_dest[1], eth->h_dest[2], eth->h_dest[3], eth->h_dest[4], eth->h_dest[5]);
@@ -193,7 +193,7 @@ struct {
 同时也预定义了客户端和负载均衡器的 IP 地址和 MAC 地址：
 
 ```c
-int client_ip = bpf_htonl(0xa000001);  
+int client_ip = bpf_htonl(0xa000001);
 unsigned char client_mac[ETH_ALEN] = {0xDE, 0xAD, 0xBE, 0xEF, 0x0, 0x1};
 int load_balancer_ip = bpf_htonl(0xa00000a);
 unsigned char load_balancer_mac[ETH_ALEN] = {0xDE, 0xAD, 0xBE, 0xEF, 0x0, 0x10};
@@ -401,7 +401,7 @@ BPF skeleton（通过 `xdp_lb.skel.h` 生成）用于打开并将 XDP 程序加�
 拓扑结构表示一个测试环境，其中本地机器通过负载均衡器与两个后端节点（h2 和 h3）通信。通过虚拟以太网对（veth0 到 veth6），本地机器与负载均衡器相连，在受控环境中模拟网络连接。每个虚拟接口都有自己的 IP 和 MAC 地址，代表不同的实体。
 
 ```txt
-    +---------------------------+          
+    +---------------------------+
     |      本地机器              |
     |  IP: 10.0.0.1 (veth0)      |
     |  MAC: DE:AD:BE:EF:00:01    |
@@ -409,16 +409,16 @@ BPF skeleton（通过 `xdp_lb.skel.h` 生成）用于打开并将 XDP 程序加�
              |
              | (veth1)
              |
-    +--------+---------------+       
+    +--------+---------------+
     |    负载均衡器           |
     |  IP: 10.0.0.10 (veth6) |
     |  MAC: DE:AD:BE:EF:00:10|
-    +--------+---------------+       
-             | 
-   +---------+----------------------------+            
+    +--------+---------------+
+             |
+   +---------+----------------------------+
    |                                      |
-(veth2)                                (veth4)    
-   |                                      | 
+(veth2)                                (veth4)
+   |                                      |
 +--+---------------+             +--------+---------+
 | h2               |             | h3               |
 | IP:              |             | IP:              |

@@ -14,7 +14,7 @@ libbpf 是一个 C 语言库，伴随内核版本分发，用于辅助 eBPF 程�
 - 它提供了一组易于使用的 API，使开发者能够专注于编写核心逻辑，而不是处理底层细节。
 - 它能够确保与内核中的 eBPF 子系统的兼容性，降低了维护成本。
 
-同时，libbpf 和 BTF（BPF Type Format）都是 eBPF 生态系统的重要组成部分。它们各自在实现跨内核版本兼容方面发挥着关键作用。BTF（BPF Type Format）是一种元数据格式，用于描述 eBPF 程序中的类型信息。BTF 的主要目的是提供一种结构化的方式，以描述内核中的数据结构，以便 eBPF 程序可以更轻松地访问和操作它们。
+同时，libbpf 和 BTF（BPF Type Format）都是 eBPF 生态系统的重要组成部分。它们各自在实现跨内核版本兼容方面发挥着关键作用。<ins>BTF（BPF Type Format）是一种元数据格式，用于描述 eBPF 程序中的类型信息。BTF 的主要目的是提供一种结构化的方式，以描述内核中的数据结构，以便 eBPF 程序可以更轻松地访问和操作它们。</ins>
 
 BTF 在实现跨内核版本兼容方面的关键作用如下：
 
@@ -108,7 +108,7 @@ int handle_exit(struct trace_event_raw_sched_process_template* ctx)
     struct event *e;
     pid_t pid, tid;
     u64 id, ts, *start_ts, duration_ns = 0;
-    
+
     /* get PID and TID of exiting thread/process */
     id = bpf_get_current_pid_tgid();
     pid = id >> 32;
@@ -608,8 +608,8 @@ $ make
   GEN-SKEL .output/bootstrap.skel.h
   CC       .output/bootstrap.o
   BINARY   bootstrap
-$ sudo ./bootstrap 
-[sudo] password for yunwei: 
+$ sudo ./bootstrap
+[sudo] password for yunwei:
 TIME     EVENT COMM             PID     PPID    FILENAME/EXIT CODE
 03:16:41 EXEC  sh               110688  80168   /bin/sh
 03:16:41 EXEC  which            110689  110688  /usr/bin/which

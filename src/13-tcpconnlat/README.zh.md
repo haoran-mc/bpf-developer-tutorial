@@ -8,7 +8,7 @@ eBPF (Extended Berkeley Packet Filter) 是一项强大的网络和性能分析�
 
 在进行后端开发时，不论使用何种编程语言，我们都常常需要调用 MySQL、Redis 等数据库，或执行一些 RPC 远程调用，或者调用其他的 RESTful API。这些调用的底层，通常都是基于 TCP 协议进行的。原因是 TCP 协议具有可靠连接、错误重传、拥塞控制等优点，因此在网络传输层协议中，TCP 的应用广泛程度超过了 UDP。然而，TCP 也有一些缺点，如建立连接的延时较长。因此，也出现了一些替代方案，例如 QUIC（Quick UDP Internet Connections，快速 UDP 网络连接）。
 
-分析 TCP 连接延时对网络性能分析、优化以及故障排查都非常有用。
+<ins>分析 TCP 连接延时对网络性能分析、优化以及故障排查都非常有用。</ins>
 
 ## tcpconnlat 工具概述
 
@@ -40,7 +40,7 @@ TCP 连接的建立过程，常被称为“三次握手”（Three-way Handshake
 - 半连接队列（SYN 队列）：存储那些正在进行三次握手操作的 TCP 连接，服务器收到 SYN 包后，会将该连接信息存储在此队列中。
 - 全连接队列（Accept 队列）：存储已经完成三次握手，等待应用程序调用 `accept()` 函数的 TCP 连接。服务器在收到 ACK 包后，会创建一个新的连接并将其添加到此队列。
 
-理解了这两个队列的用途，我们就可以开始探究 tcpconnlat 的具体实现。tcpconnlat 的实现可以分为内核态和用户态两个部分，其中包括了几个主要的跟踪点：`tcp_v4_connect`, `tcp_v6_connect` 和 `tcp_rcv_state_process`。
+理解了这两个队列的用途，我们就可以开始探究 tcpconnlat 的具体实现。<ins>tcpconnlat 的实现可以分为内核态和用户态两个部分，其中包括了几个主要的跟踪点：`tcp_v4_connect`, `tcp_v6_connect` 和 `tcp_rcv_state_process`。</ins>
 
 这些跟踪点主要位于内核中的 TCP/IP 网络栈。当执行相关的系统调用或内核函数时，这些跟踪点会被激活，从而触发 eBPF 程序的执行。这使我们能够捕获和测量 TCP 连接建立的整个过程。
 
@@ -574,7 +574,7 @@ $ make
   GEN-SKEL .output/tcpconnlat.skel.h
   CC       .output/tcpconnlat.o
   BINARY   tcpconnlat
-$ sudo ./tcpconnlat 
+$ sudo ./tcpconnlat
 PID    COMM         IP SADDR            DADDR            DPORT LAT(ms)
 222564 wget         4  192.168.88.15    110.242.68.3     80    25.29
 222684 wget         4  192.168.88.15    167.179.101.42   443   246.76

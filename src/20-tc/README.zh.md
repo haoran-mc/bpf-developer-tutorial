@@ -2,7 +2,7 @@
 
 ## 背景
 
-Linux 的流量控制子系统（Traffic Control, tc）在内核中存在了多年，类似于 iptables 和 netfilter 的关系，tc 也包括一个用户态的 tc 程序和内核态的 trafiic control 框架，主要用于从速率、顺序等方面控制数据包的发送和接收。从 Linux 4.1 开始，tc 增加了一些新的挂载点，并支持将 eBPF 程序作为 filter 加载到这些挂载点上。
+<ins>Linux 的流量控制子系统（Traffic Control, tc）在内核中存在了多年，类似于 iptables 和 netfilter 的关系，tc 也包括一个用户态的 tc 程序和内核态的 trafiic control 框架，主要用于从速率、顺序等方面控制数据包的发送和接收。</ins>从 Linux 4.1 开始，tc 增加了一些新的挂载点，并支持将 eBPF 程序作为 filter 加载到这些挂载点上。
 
 ## tc 概述
 
